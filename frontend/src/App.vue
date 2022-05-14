@@ -10,12 +10,14 @@
       </div>
     </div> -->
     <div class="container">
-
+ <!-- animation -->
+      <transition-group enter-active-class="animate__animated animate__rollIn" leave-active-class="animate__animated animate__backOutLeft">
+      
   <div v-for="lang in languages" :key="lang.id" class="card">
     <div class="face face1">
       <div class="content">
         <h2 class="python">
-          <button class="vote_button" style="-webkit-text-fill-color: #000000;">
+          <button class="vote_button" v-on:click="vote(lang.id)" style="-webkit-text-fill-color: #000000;">
             Vote
             </button>
           </h2>
@@ -28,7 +30,7 @@
       <h2>{{lang.votes}}</h2>
     </div>
   </div>
-
+</transition-group>
   <!-- <div class="card">
     <div class="face face1">
       <div class="content">
@@ -61,6 +63,7 @@
 <script>
 import axios from 'axios';
 const baseURL = 'http://localhost:3000/posts'
+const voteURL = "http://localhost:3000/vote_post?id="
 
 
 export default {
@@ -81,6 +84,13 @@ export default {
       console.error(e)
     }
   },
+   methods: {
+     async vote(id){
+      const res = await axios.patch(voteURL + id);
+      console.log(res.data)
+      this.languages[id-1].votes +=1
+     }
+   }
 }
 </script>
 
