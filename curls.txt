@@ -1,0 +1,6 @@
+
+Vote post
+curl localhost:3000/vote_post?id=2 --request "PATCH"
+
+Create new
+curl localhost:3000/posts --header "Content-Type: application/json" -d @body.json --request "POST"
