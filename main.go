@@ -5,66 +5,65 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	cors "github.com/rs/cors/wrapper/gin"
 )
 
-
 // CRU API with functionality for addition and subtraction
-
-
 
 // We will use gin package
 // documentation https://github.com/gin-gonic/gin#installation
 
 // when serializing this convert it to lower case json
 type post struct {
-	ID 		string `json:"id"`
-	Title 	string `json:"title"`
-	Author 	string `json:"author"`
-	Img 	string `json:"img"`
-	Text 	string `json:"text"`
-	Votes 	int `json:"votes"`
+	ID     string `json:"id"`
+	Title  string `json:"title"`
+	Author string `json:"author"`
+	Img    string `json:"img"`
+	Text   string `json:"text"`
+	Votes  int    `json:"votes"`
 }
 
 // data structures that have our posts
 var posts = []post{
-	{ID:"1", Title: "Python",Author: "Me",Text: "Python is a general purpose language", Votes: 3, Img: ""},
-	{ID:"2", Title: "C",Author: "Me",Text: "C is a general purpose language", Votes: 4, Img: ""},
-	{ID:"3", Title: "Go",Author: "Me",Text: "Go is a general purpose language", Votes: 12, Img: ""},
+	{ID: "1", Title: "Python", Author: "Me", Text: "Python is a high-level, interpreted, general-purpose programming language. Its design philosophy emphasizes code readability with the use of significant indentation.", Votes: 3, Img: ""},
+	{ID: "2", Title: "C/C++", Author: "Me", Text: "C is a structural programming language, and it does not support classes and objects, while C++ is an object-oriented programming language that supports the concept of classes and objects.", Votes: 4, Img: ""},
+	{ID: "3", Title: "Go", Author: "Me", Text: "Go is a statically typed, compiled programming language designed at Google. It is syntactically similar to C, but with memory safety, garbage collection, structural typing and CSP-style concurrency.", Votes: 12, Img: ""},
+	{ID: "4", Title: "Java", Author: "Me", Text: "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.", Votes: 2, Img: ""},
+	{ID: "5", Title: "C#", Author: "Me", Text: "C# is a general-purpose, multi-paradigm programming language. C# encompasses static typing, strong typing, lexically scoped, imperative, declarative, functional, generic, object-oriented, and component-oriented programming disciplines.", Votes: 2, Img: ""},
+	{ID: "6", Title: "Javascript", Author: "Me", Text: "JavaScript, often abbreviated JS, is a programming language that is one of the core technologies of the World Wide Web, alongside HTML and CSS. Over 97% of websites use JavaScript on the client side for web page behavior", Votes: 2, Img: ""},
 }
-
 
 // Get all posts data function
-func getPosts(c *gin.Context){
-	c.IndentedJSON(http.StatusOK,posts)
+func getPosts(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, posts)
 }
-
 
 // POST
 // Create book
-func createPost(c *gin.Context){
+func createPost(c *gin.Context) {
 	var newPost post
 	if err := c.BindJSON(&newPost); err != nil {
 		return
 	}
-	posts = append(posts,newPost)
+	posts = append(posts, newPost)
 	c.IndentedJSON(http.StatusCreated, newPost)
 }
 
-
 // GET by id
-func post_by_id(c *gin.Context){
+func post_by_id(c *gin.Context) {
 	id := c.Param("id")
 	post, err := get_post_by_id(id)
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound,gin.H{"message":"This does not exist"})
-		return 
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "This does not exist"})
+		return
 	}
 
 	c.IndentedJSON(http.StatusOK, post)
 }
 
 // search and return post function
-func get_post_by_id(id string) (*post, error){
+func get_post_by_id(id string) (*post, error) {
 	// iterate all posts
 	for i, p := range posts {
 		if p.ID == id {
@@ -76,61 +75,57 @@ func get_post_by_id(id string) (*post, error){
 }
 
 // Vote for post
-func vote_book(c *gin.Context){
+func vote_book(c *gin.Context) {
 	id, ok := c.GetQuery("id")
 
 	if !ok {
-		c.IndentedJSON(http.StatusNotFound,gin.H{"message":"Missing id"})
-		return 
-	}
-
-	post, err := get_post_by_id(id)
-	if err != nil {
-		c.IndentedJSON(http.StatusNotFound,gin.H{"message":"This does not exist"})
-		return 
-	}
-
-	if post.Votes <= 0 {
-		c.IndentedJSON(http.StatusBadRequest,gin.H{"message":"This language has zero votes"})
-	}
-
-	post.Votes +=1
-	c.IndentedJSON(http.StatusOK, post)
-}
-
-
-// SAME as previous
-// Downvote for post
-func downvote_book(c *gin.Context){
-	id, ok := c.GetQuery("id")
-
-	if !ok {
-		c.IndentedJSON(http.StatusNotFound,gin.H{"message":"Missing id"})
-		return 
-	}
-
-	post, err := get_post_by_id(id)
-	if err != nil {
-		c.IndentedJSON(http.StatusNotFound,gin.H{"message":"This does not exist"})
-		return 
-	}
-
-	if post.Votes <= 0 {
-		c.IndentedJSON(http.StatusBadRequest,gin.H{"message":"This language has zero votes"})
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Missing id"})
 		return
 	}
 
-	post.Votes -=1
+	post, err := get_post_by_id(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "This does not exist"})
+		return
+	}
+
+	if post.Votes <= 0 {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "This language has zero votes"})
+	}
+
+	post.Votes += 1
 	c.IndentedJSON(http.StatusOK, post)
 }
 
+// SAME as previous
+// Downvote for post
+func downvote_book(c *gin.Context) {
+	id, ok := c.GetQuery("id")
 
+	if !ok {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Missing id"})
+		return
+	}
 
+	post, err := get_post_by_id(id)
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "This does not exist"})
+		return
+	}
 
+	if post.Votes <= 0 {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "This language has zero votes"})
+		return
+	}
+
+	post.Votes -= 1
+	c.IndentedJSON(http.StatusOK, post)
+}
 
 // run erver and do the routing
-func main(){
+func main() {
 	router := gin.Default()
+	router.Use(cors.AllowAll())
 	router.GET("/posts", getPosts)
 	router.GET("/posts/:id", post_by_id)
 	router.POST("/posts", createPost)
