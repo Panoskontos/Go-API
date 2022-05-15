@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="myhead">Vote your Favourite Programming language</h1>
+    <h1 class="myhead" style="color: #ffffff;">Vote your Favourite Language</h1>
 
     <!-- <div>
       <div v-for="lang in languages" :key="lang.id">
@@ -17,8 +17,12 @@
     <div class="face face1">
       <div class="content">
         <h2 class="python">
-          <button class="vote_button" v-on:click="vote(lang.id)" style="-webkit-text-fill-color: #000000;">
+          <button class="vote_button vote" v-on:click="vote(lang.id);" style="-webkit-text-fill-color: #ffffff;">
             Vote
+            </button>
+            &nbsp;
+          <button class="vote_button downvote" v-on:click="downvote(lang.id);t" style="-webkit-text-fill-color: #ffffff;">
+            Downvote
             </button>
           </h2>
         <br>
@@ -27,6 +31,7 @@
       </div>
     </div>
     <div class="face face2">
+      
       <h2>{{lang.votes}}</h2>
     </div>
   </div>
@@ -64,6 +69,7 @@
 import axios from 'axios';
 const baseURL = 'http://localhost:3000/posts'
 const voteURL = "http://localhost:3000/vote_post?id="
+const downvoteURL = "http://localhost:3000/downvote_post?id="
 
 
 export default {
@@ -89,6 +95,19 @@ export default {
       const res = await axios.patch(voteURL + id);
       console.log(res.data)
       this.languages[id-1].votes +=1
+      var btn = document.querySelectorAll('.vote')[id-1]
+      btn.disabled = true;
+     },
+
+     async downvote(id){
+      const res = await axios.patch(downvoteURL + id);
+      console.log(res.data)
+      if (this.languages[id-1].votes >0) {
+          this.languages[id-1].votes -=1
+      }
+      var btn = document.querySelectorAll('.downvote')[id-1]
+      btn.disabled = true;
+      
      }
    }
 }
@@ -113,10 +132,12 @@ body {
 .vote_button {
   
   font-size: 16px;
-  background:#eeeeee;
   padding: 3px 15px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor:pointer;
+  background: linear-gradient(217deg, rgba(255, 255, 255, 0.8), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgba(0, 238, 255, 0.8), rgba(0,255,0,0) 70.71%),
+            linear-gradient(336deg, rgba(255, 0, 230, 0.8), rgba(0,0,255,0) 70.71%);
 }
 
 .myhead {
@@ -193,11 +214,11 @@ body {
  body .container .card:hover .face.face2 h2 {
 	font-size: 2em;
 }
- body .container .card:nth-child(1) .face.face2 {
+ body .container .card .face.face2 {
 	background-image: linear-gradient(40deg, #c806c1 0%, #10f1f1 45%, #c500bf 100%);
 	border-radius: 15px;
 }
- body .container .card:nth-child(2) .face.face2 {
+ /* body .container .card:nth-child(2) .face.face2 {
 	background-image: linear-gradient(40deg, #000000 0%, #000000 45%, #000000 100%);
 	border-radius: 15px;
 }
@@ -211,11 +232,11 @@ body {
 }
  body .container .card:nth-child(5) .face.face2 {
 	background-image: linear-gradient(40deg, #000000 0%, #000000 45%, #000000 100%);
-	border-radius: 15px;
-}
- body .container .card:nth-child(6) .face.face2 {
+	border-radius: 15px; */
+/* } */
+ /* body .container .card .face.face2 {
 	background-image: linear-gradient(40deg,  #c806c1 0%, #10f1f1 45%, #c500bf 100%);
 	border-radius: 15px;
-}
+} */
  
 </style>
