@@ -11,31 +11,10 @@
     </div> -->
     <div class="container">
  <!-- animation -->
-      <transition-group enter-active-class="animate__animated animate__rollIn" leave-active-class="animate__animated animate__backOutLeft">
-      
-  <div v-for="lang in languages" :key="lang.id" class="card">
-    <div class="face face1">
-      <div class="content">
-        <h2 class="python">
-          <button class="vote_button vote" v-on:click="vote(lang.id);" style="-webkit-text-fill-color: #ffffff;">
-            Vote
-            </button>
-            &nbsp;
-          <button class="vote_button downvote" v-on:click="downvote(lang.id);t" style="-webkit-text-fill-color: #ffffff;">
-            Downvote
-            </button>
-          </h2>
-        <br>
-        <h2 class="python">{{lang.title}}</h2>
-        <p class="python">{{lang.text}}</p>
-      </div>
-    </div>
-    <div class="face face2">
-      
-      <h2>{{lang.votes}}</h2>
-    </div>
-  </div>
-</transition-group>
+
+  <LangCard @voteid="vote" @downvote="downvote" :languages="languages"/>
+
+
   <!-- <div class="card">
     <div class="face face1">
       <div class="content">
@@ -67,6 +46,8 @@
 
 <script>
 import axios from 'axios';
+import LangCard from './components/LangCard.vue'
+
 const baseURL = 'http://localhost:3000/posts'
 const voteURL = "http://localhost:3000/vote_post?id="
 const downvoteURL = "http://localhost:3000/downvote_post?id="
@@ -75,6 +56,7 @@ const downvoteURL = "http://localhost:3000/downvote_post?id="
 export default {
   name: 'App',
   components: {
+    LangCard,
   },
   data(){
     return {
