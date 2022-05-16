@@ -14,6 +14,8 @@
           <button class="vote_button downvote" v-on:click="$emit('downvote',lang.id)" style="-webkit-text-fill-color: #ffffff;">
             Downvote
             </button>
+            &nbsp;
+          <i @click="$emit('removeid',lang.id)" class="bi bi-x-circle"></i>
           </h2>
         <br>
         <h2 class="python">{{lang.title}}</h2>
@@ -44,3 +46,12 @@ export default {
 
 
 </script>
+
+<style>
+    .bi {
+        -webkit-text-fill-color:rgb(255, 0, 255)
+    }
+
+
+
+</style>

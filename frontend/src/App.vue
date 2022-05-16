@@ -2,45 +2,12 @@
   <div>
     <h1 class="myhead" style="color: #ffffff;">Vote your Favourite Language</h1>
 
-    <!-- <div>
-      <div v-for="lang in languages" :key="lang.id">
-        {{lang.title}}
-        {{lang.votes}}
-        
-      </div>
-    </div> -->
+  
     <div class="container">
- <!-- animation -->
 
-  <LangCard @voteid="vote" @downvote="downvote" :languages="languages"/>
-
-
-  <!-- <div class="card">
-    <div class="face face1">
-      <div class="content">
-        <span class="stars"></span>
-        <h2 class="python">Python</h2>
-        <p class="python">Python is an interpreted, high-level and general-purpose programming language.</p>
-      </div>
+      <LangCard @removeid="removecard" @voteid="vote" @downvote="downvote" :languages="languages"/>
+    
     </div>
-    <div class="face face2">
-      <h2>02</h2>
-    </div>
-  </div> -->
-
-  <!-- <div class="card">
-    <div class="face face1">
-      <div class="content">
-        <span class="stars"></span>
-        <h2 class="cSharp">C#</h2>
-        <p class="cSharp">C# is a general-purpose, multi-paradigm programming language encompassing static typing, strong typing, lexically scoped and component-oriented programming disciplines.</p>
-      </div>
-    </div>
-    <div class="face face2">
-      <h2>03</h2>
-    </div>
-  </div> -->
-</div>
   </div>
 </template>
 
@@ -88,9 +55,12 @@ export default {
           this.languages[id-1].votes -=1
       }
       var btn = document.querySelectorAll('.downvote')[id-1]
-      btn.disabled = true;
-      
-     }
+      btn.disabled = true; 
+     },
+
+     removecard(id){
+       this.languages = this.languages.filter(x => x.id !== id)
+     },
    }
 }
 </script>
@@ -185,7 +155,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-size: 10em;
-	color: #fff;
+	color: rgb(220, 220, 220);
 	transition: 0.5s;
 	text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	z-index: 10;
