@@ -5,7 +5,7 @@
   
     <div class="container">
 
-      <LangCard @editid="editCard" @removeid="removecard" @voteid="vote" @downvote="downvote" :languages="languages"/>
+      <LangCard @changetext="editText" @editid="editCard" @removeid="removecard" @voteid="vote" @downvote="downvote" :languages="languages"/>
     
     </div>
   </div>
@@ -68,6 +68,16 @@ export default {
        var vis_text = document.querySelectorAll('.vis_text')[id-1]
        vis_text.classList.add("invisible")
        textarea.classList.remove("invisible");
+     },
+
+     editText(obj){
+       console.log(obj)
+       var textarea = document.querySelectorAll('textarea')[obj.id-1]
+       var vis_text = document.querySelectorAll('.vis_text')[obj.id-1]
+        vis_text.classList.remove("invisible")
+       textarea.classList.add("invisible");
+       this.languages[obj.id-1].text = obj.text
+
      }
    }
 }

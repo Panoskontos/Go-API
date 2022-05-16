@@ -21,7 +21,7 @@
           </h2>
         <br>
         <h2 class="python">{{lang.title}}</h2>
-        <textarea class="edit_text invisible" name="" id="" cols="30" rows="10" :placeholder="lang.text"></textarea>
+        <textarea v-model="newtext" @keyup.enter="changetext" class="edit_text invisible" name="" id="" cols="30" rows="10" :placeholder="lang.text"></textarea>
         <p class="python vis_text">{{lang.text}}</p>
       </div>
     </div>
@@ -36,13 +36,19 @@
 <script>
 
 export default {
-  name: 'LangCard',
-  props: {languages: Array},
-  methods: {
+     name: 'LangCard',
+    data(){
+    return {
+      newtext: '',
+    }},
+     props: {languages: Array},
+      methods: {
     //   longer way to do it
       vote(id){
           this.$emit('voteid',id)
-      }
+      },
+     
+     
 
 
   }
