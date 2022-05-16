@@ -5,7 +5,7 @@
   
     <div class="container">
 
-      <LangCard @removeid="removecard" @voteid="vote" @downvote="downvote" :languages="languages"/>
+      <LangCard @editid="editCard" @removeid="removecard" @voteid="vote" @downvote="downvote" :languages="languages"/>
     
     </div>
   </div>
@@ -61,6 +61,14 @@ export default {
      removecard(id){
        this.languages = this.languages.filter(x => x.id !== id)
      },
+
+     editCard(id){
+       console.log(id)
+       var textarea = document.querySelectorAll('textarea')[id-1]
+       var vis_text = document.querySelectorAll('.vis_text')[id-1]
+       vis_text.classList.add("invisible")
+       textarea.classList.remove("invisible");
+     }
    }
 }
 </script>
@@ -79,6 +87,10 @@ body {
 	min-height: 100vh;
 	background-color: #a9c9ff;
 	background-image: linear-gradient(180deg, #a9c9ff 0%, #ffbbec 100%);
+}
+
+.invisible {
+  display:none;
 }
 
 .vote_button {

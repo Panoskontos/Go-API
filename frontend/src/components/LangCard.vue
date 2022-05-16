@@ -14,12 +14,15 @@
           <button class="vote_button downvote" v-on:click="$emit('downvote',lang.id)" style="-webkit-text-fill-color: #ffffff;">
             Downvote
             </button>
-            &nbsp;
+            
           <i @click="$emit('removeid',lang.id)" class="bi bi-x-circle"></i>
+          
+           <i @click="$emit('editid',lang.id)" class="bi bi-gear-fill"></i>
           </h2>
         <br>
         <h2 class="python">{{lang.title}}</h2>
-        <p class="python">{{lang.text}}</p>
+        <textarea class="edit_text invisible" name="" id="" cols="30" rows="10" :placeholder="lang.text"></textarea>
+        <p class="python vis_text">{{lang.text}}</p>
       </div>
     </div>
     <div class="face face2">
@@ -40,6 +43,8 @@ export default {
       vote(id){
           this.$emit('voteid',id)
       }
+
+
   }
 
 }
@@ -49,9 +54,20 @@ export default {
 
 <style>
     .bi {
+        cursor:pointer;
+        margin: 0 5px;
         -webkit-text-fill-color:rgb(255, 0, 255)
     }
 
+    .edit_text {
+        background-color: black;
+        color:rgb(255, 255, 255);
+        margin: 10px 0px;
+        padding: 10px;
+         border: 1px solid rgb(241, 135, 255);
+         box-shadow: 1px 1px 1px rgb(249, 200, 255);
+    }
 
+    
 
 </style>
